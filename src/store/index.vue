@@ -5,7 +5,7 @@ import {defineComponent, InjectionKey} from "vue";
 import IProjeto from "@/interfaces/IProjeto.vue";
 import {ALTERA_PROJETO, ADICIONA_PROJETO, EXCLUIR_PROJETO, NOTIFICAR, DEFINIRR_PROJETO} from "@/store/tipo-Mutacoes";
 import {INotificacao} from "@/interfaces/INotificacao";
-import {OBTER_PROJETOS} from "@/store/tipo-acoes";
+import {ALTERAR_PROJETOS, CADASTRA_PROJETOS, OBTER_PROJETOS, REMOVER_PROJETOS} from "@/store/tipo-acoes";
 import http from "@/http";
 
 export default defineComponent({
@@ -51,7 +51,19 @@ export const store = createStore<Estado>({
     [OBTER_PROJETOS]({ commit }){
       http.get('projetos')
           .then(respota => commit(DEFINIRR_PROJETO, respota.data))
-    }
+    },
+     [CADASTRA_PROJETOS](contexto, nomeDoProjeto: string){
+      return http.post('/projetos',{
+        nome: nomeDoProjeto,
+      })
+     },
+     [ALTERAR_PROJETOS](contexto, projeto: IProjeto){
+       return http.put(`/projetos/${projeto.id}`, projeto)
+     },
+     [REMOVER_PROJETOS]({ commit }, id: string){
+       return http.delete(`/projetos/${id}`)
+           .then(() => commit(EXCLUIR_PROJETO, id))
+     }
    }
 })
 

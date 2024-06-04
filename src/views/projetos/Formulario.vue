@@ -1,10 +1,11 @@
 <script  lang="ts">
 import {computed, defineComponent} from 'vue';
 import {useStore} from "@/store/index.vue";
-import {ADICIONA_PROJETO, ALTERA_PROJETO, NOTIFICAR} from "@/store/tipo-Mutacoes";
+import {ALTERA_PROJETO} from "@/store/tipo-Mutacoes";
 import {TipoNotificacao} from "@/interfaces/INotificacao";
 import {notificacaoMixin} from "@/minixs/Notificar";
 import useNotificador from '@/hooks/Notificador'
+import {ALTERAR_PROJETOS, CADASTRA_PROJETOS} from "@/store/tipo-acoes";
 
 export default defineComponent({
   name: 'Formulario',
@@ -28,18 +29,24 @@ export default defineComponent({
   methods:{
     salvar(){
       if(this.id){
-        this.store.commit(ALTERA_PROJETO, {
+        this.store.dispatch(ALTERAR_PROJETOS, {
           id: this.id,
           nome: this.nomeDoProjeto,
-        });
+        }).then(() => this.lidarComSucesso())
+            .catch(() => this.lidarComError());
       }else{
-        this.store.commit(ADICIONA_PROJETO, this.nomeDoProjeto);
+        this.store.dispatch(CADASTRA_PROJETOS, this.nomeDoProjeto)
+        .then(() => this.lidarComSucesso()).catch(() => this.lidarComError())
       }
+    },
+    lidarComSucesso(){
       this.nomeDoProjeto = "";
-      this.notificar(TipoNotificacao.SUCESSO, 'Excelente', 'Oprojeto foi cadastrado com sucesso')
+      this.notificar(TipoNotificacao.SUCESSO, 'Excelente', 'O projeto foi cadastrado com sucesso')
       this.$router.push("/projetos");
     },
-
+    lidarComError(){
+      this.notificar(TipoNotificacao.FALHA, 'Falha', 'O projeto não foi cadastrado ')
+    }
   },
   setup() {
           const store = useStore()

@@ -2,20 +2,26 @@
 import {computed, defineComponent} from 'vue';
 import { useStore } from "@/store/index.vue";
 import {EXCLUIR_PROJETO} from "@/store/tipo-Mutacoes";
-import {OBTER_PROJETOS} from "@/store/tipo-acoes";
+import {OBTER_PROJETOS, REMOVER_PROJETOS} from "@/store/tipo-acoes";
+import {TipoNotificacao} from "@/interfaces/INotificacao";
+import useNotificador from "@/hooks/Notificador";
 
 export default defineComponent({
   name: 'Lista',
   methods:{
     excluir(id: string){
-     this.store.commit(EXCLUIR_PROJETO, id);
+     this.store.dispatch(REMOVER_PROJETOS, id)
+         .then(() =>  this.notificar(TipoNotificacao.SUCESSO, 'Excelente', 'O projeto excluido com sucesso'))
+         .catch(() => this.notificar(TipoNotificacao.FALHA, 'Falha', 'O projeto não foi excluido'));
     }
   },
   setup() {
       const store = useStore()
       store.dispatch(OBTER_PROJETOS)
+    const { notificar }  = useNotificador()
     return{
         store,
+      notificar,
       projetos: computed(()=> store.state.projetos)
     }
   },
