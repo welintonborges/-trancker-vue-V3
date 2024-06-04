@@ -1,5 +1,5 @@
 import {TipoNotificacao} from "../interfaces/INotificacao";
-import {NOTIFICAR} from "../store/Tipo-Mutacoes";
+import {NOTIFICAR} from "../store/tipo-Mutacoes";
 
 export const notificacaoMixin = {
     methods:{

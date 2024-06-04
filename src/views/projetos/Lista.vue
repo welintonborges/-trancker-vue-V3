@@ -1,7 +1,8 @@
 <script  lang="ts">
 import {computed, defineComponent} from 'vue';
 import { useStore } from "@/store/index.vue";
-import {EXCLUIR_PROJETO} from "@/store/Tipo-Mutacoes";
+import {EXCLUIR_PROJETO} from "@/store/tipo-Mutacoes";
+import {OBTER_PROJETOS} from "@/store/tipo-acoes";
 
 export default defineComponent({
   name: 'Lista',
@@ -12,6 +13,7 @@ export default defineComponent({
   },
   setup() {
       const store = useStore()
+      store.dispatch(OBTER_PROJETOS)
     return{
         store,
       projetos: computed(()=> store.state.projetos)

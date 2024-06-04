@@ -1,7 +1,7 @@
 <script  lang="ts">
 import {computed, defineComponent} from 'vue';
 import {useStore} from "@/store/index.vue";
-import {ADICIONA_PROJETO, ALTERA_PROJETO, NOTIFICAR} from "@/store/Tipo-Mutacoes";
+import {ADICIONA_PROJETO, ALTERA_PROJETO, NOTIFICAR} from "@/store/tipo-Mutacoes";
 import {TipoNotificacao} from "@/interfaces/INotificacao";
 import {notificacaoMixin} from "@/minixs/Notificar";
 import useNotificador from '@/hooks/Notificador'

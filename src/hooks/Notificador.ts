@@ -1,6 +1,6 @@
 import { TipoNotificacao } from "@/interfaces/INotificacao";
 import { store } from '@/store/index.vue'
-import { NOTIFICAR } from "@/store/Tipo-Mutacoes";
+import { NOTIFICAR } from "@/store/tipo-Mutacoes";
 
 type Notificador = {
     notificar: (tipo: TipoNotificacao, titulo: string, texto: string) => void
